@@ -1,0 +1,63 @@
+﻿@model IEnumerable<StarWarsApi.Models.Planet>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planets</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#searchForm").submit(function(event) {
+                event.preventDefault();
+                loadPlanets(1);
+            });
+
+            function loadPlanets(page) {
+                var search = $("#searchInput").val();
+                $.get("@Url.Action("Search", "Planet")", { search: search, page: page }, function(data) {
+                    var planetsList = $("#planetsList");
+                    planetsList.empty();
+                    $.each(data.planets, function(index, planet) {
+                        planetsList.append('<li class="list-group-item"><a href="@Url.Action("Details", "Planet")?name=' + planet.name + '">' + planet.name + '</a></li>');
+                    });
+
+                    var pagination = $(".pagination");
+                    pagination.empty();
+                    if (data.currentPage > 1) {
+                        pagination.append('<li class="page-item"><a class="page-link" href="#" data-page="' + (data.currentPage - 1) + '">Previous</a></li>');
+                    }
+                    for (var i = 1; i <= data.totalPages; i++) {
+                        pagination.append('<li class="page-item ' + (i === data.currentPage ? "active" : "") + '"><a class="page-link" href="#" data-page="' + i + '">' + i + '</a></li>');
+                    }
+                    if (data.currentPage < data.totalPages) {
+                        pagination.append('<li class="page-item"><a class="page-link" href="#" data-page="' + (data.currentPage + 1) + '">Next</a></li>');
+                    }
+                });
+            }
+
+            $(document).on("click", ".page-link", function(event) {
+                event.preventDefault();
+                var page = $(this).data("page");
+                loadPlanets(page);
+            });
+
+            loadPlanets(1);
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Planets</h1>
+        <form id="searchForm" method="get" action="@Url.Action("Index", "Planet")" class="mb-3">
+            <input type="text" id="searchInput" name="search" class="form-control" placeholder="Search for a planet by name or ID" value="@ViewData["SearchTerm"]">
+            <button type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+        <ul id="planetsList" class="list-group mt-3"></ul>
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination"></ul>
+        </nav>
+    </div>
+</body>
+</html>

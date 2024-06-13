@@ -1,0 +1,29 @@
+﻿@model StarWarsApi.Models.Planet
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Model.Name Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">@Model.Name Details</h1>
+        <ul class="list-group mt-3">
+            <li class="list-group-item"><strong>Rotation Period:</strong> @Model.RotationPeriod</li>
+            <li class="list-group-item"><strong>Orbital Period:</strong> @Model.OrbitalPeriod</li>
+            <li class="list-group-item"><strong>Diameter:</strong> @Model.Diameter</li>
+            <li class="list-group-item"><strong>Climate:</strong> @Model.Climate</li>
+            <li class="list-group-item"><strong>Gravity:</strong> @Model.Gravity</li>
+            <li class="list-group-item"><strong>Terrain:</strong> @Model.Terrain</li>
+            <li class="list-group-item"><strong>Surface Water:</strong> @Model.SurfaceWater</li>
+            <li class="list-group-item"><strong>Population:</strong> @Model.Population</li>
+            <li class="list-group-item"><strong>Created:</strong> @Model.Created</li>
+            <li class="list-group-item"><strong>Edited:</strong> @Model.Edited</li>
+        </ul>
+        <a href="@Url.Action("Index", "Planet")" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+</body>
+</html>
